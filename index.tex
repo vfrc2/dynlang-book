@@ -3,6 +3,7 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage[russian]{babel}
+\usepackage{hyperref}
 %\usepackage{listings}
 
 \begin{document}
@@ -82,9 +83,7 @@
 	\end{verbatim}
 	
 	На самом деле, указанные функции обладают гораздо большим набором возможностей, но для первого знакомства этого будет достаточно. 
-		
-	\section{Глоссарий}
-		
+				
 	\section{Упражнения}
 	
 	Откройте шаблон <<Исполнятор>> и решите следующие задачи:
@@ -112,6 +111,7 @@
 	\section{Операторы ветвления}
 	
 	\section{Циклы}
+	\label{sec:loops}
 	
 	Вооружившись ранее изученным набором команд, вам не составит труда реализовать цикл на динамическом языке.
 	
@@ -459,21 +459,101 @@ if(
 
 Приступим же к рефакторингу!
 
-Первым делом, обратим внимание на повторяющийся без изменений фрагмент кода:
+Первым делом, обратим внимание на повторяющийся фрагмент кода:
 
 \begin{verbatim}
 [substr([getsysdate([+0])],[3],[5])]
 \end{verbatim}
 
-Это код получения номера текущего месяца. Выделим его в отдельную функцию через оператор call:
+Это скрипт получения значения номера текущего месяца.
+Вычислим его один раз и запомним в отдельном скрытом поле формы:
 
-Создадим два скрытых элемента:
-1) id = "month_num"
-2) id = "get_month_number", value = "setValue([substr([getsysdate([+0])],[3],[5])],[month_num])])" 
+\begin{verbatim}
+<text id="month_num" visible="false"
+        sbcommand="setValue([substr([getsysdate([+0])],[3],[5])],[this])]" 
+ />
+\end{verbatim}
 
-Теперь, вызов нашей функции в общем выражении можно заменить на:
-[getValue([call([getValue([get_month_number])],[month_num])])
+Далее, нам потребуется структура для выставляения соответствия номерам месяцев их названий. С этой задачей отлично справляется элемент <<select>> :
 
-Таким образом, мы получили возможность управлять логикой получения проверяемого значения, не изменяя кода основного скрипта.
+\begin{verbatim}
+<select id="months" visible="false"> 
+
+<option label="Январь">1</option>
+<option label="Февраль">2</option>
+<option label="Март">3</option>
+<option label="Апрель">4</option>
+<option label="Май">5</option>
+<option label="Июнь">6</option>
+<option label="Июль">7</option>
+<option label="Август">8</option>
+<option label="Сентябрь">9</option>
+<option label="Октябрь">10</option>
+<option label="Ноябрь">11</option>
+<option label="Декабрь">12</option>
+<option label="Январь">13</option>
+<option label="Февраль">14</option>
+
+</select>
+\end{verbatim}
+
+Обратите внимание, что мы указали 2 <<лишних>> месяца -- это потребуется для корректной работы нашего алгоритма в ноябре и декабре.
+
+Добавим на динамическую форму select для вывода результата:
+\begin{verbatim}
+<select id="result" visible="true"> 
+\end{verbatim}
+
+Реализуем функцию добавления в наш новый контрол очередного месяца:
+
+\begin{verbatim}
+<text id="add_month">
+setValue(
+    [getValue(
+        [setSelectedValue(
+            [plus(
+                [getValue([month_num])],
+                [getValue([i])]
+            )], 
+            [months]
+        )],
+        [result]
+    )],
+    [result]
+)
+</text>
+\end{verbatim}
+
+Где <<i>> - простое скрытое поле для хранения счетчика:
+\begin{verbatim}
+<text id="month_num" visible="false">0</text>
+\end{verbatim}
+
+Для добавления нового месяца в итоговый select достаточно выполнить вызвать нашу функцию <<add\_month>> через оператор call: 
+
+\begin{verbatim}
+call([getValue([add_month])],[this])
+\end{verbatim}
+
+Теперь, для решения нашей задачи потребуется выполнить скрипт <<add\_month>> трижды, меняя значение <<i>>:
+
+\begin{verbatim}
+run(
+    [call([getValue([add_month])],[this])],
+    [setValue([1],[i])],
+    [call([getValue([add_month])],[this])],
+    [setValue([2],[i])],
+    [call([getValue([add_month])],[this])],
+    [setSelectedValue([null],[result])]
+)
+\end{verbatim}
+
+\section{Упражнения}
+
+\begin{enumerate}
+	\item Используя код разобранного выше примера, решите задачу: в элемент типа select требуется вывести название текущего и 5 последующих нечетных месяцев. Для решения задачи рекомендуется использовать подход к реализации циклов, рассмотренный в  \autoref{sec:loops}
+	
+\end{enumerate}
+
 
 \end{document}
