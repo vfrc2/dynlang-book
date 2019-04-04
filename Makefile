@@ -1,5 +1,5 @@
 all:
-	pdflatex -interaction nonstopmode -output-directory pdf index.tex 
+	pdflatex -interaction nonstopmode index.tex 
 
 clean:
-	rm -rf pdf && mkdir pdf
+	rm -rf index.pdf
