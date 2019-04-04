@@ -1,5 +1,5 @@
-\documentclass[10pt]{book}
-\usepackage[width=5.5in,height=8.5in,hmarginratio=3:2,vmarginratio=1:1]{geometry}
+\documentclass[14pt]{extbook}
+\usepackage[width=170mm,height=240mm,hmarginratio=3:2,vmarginratio=1:1]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage[russian]{babel}
 \usepackage{graphicx}
@@ -7,7 +7,8 @@
 \usepackage{hyperref}
 \usepackage{subfiles}
 \usepackage{glossaries}
-%\usepackage{listings}
+\usepackage{booktabs}
+
 \makeglossaries
 
 \begin{document}
@@ -48,6 +49,10 @@
 	% Паттерны ================================================================================
 	\chapter{Паттерны программирования на динамическом языке}
     \subfile{sections/patterns}
+    
+    \appendix
+    \chapter{Описание динамических команд}
+    \subfile{sections/dlib_doc}
 
     % Глоссарий ================================================================================
     \clearpage

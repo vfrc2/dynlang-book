@@ -1,0 +1,2337 @@
+\providecommand{\tightlist}{%
+	\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+\setlength{\LTleft}{0pt}
+
+\hypertarget{setvaluevalue-id-string}{%
+\section{setValue(value, id)}\label{setvaluevalue-id-string}}
+
+Устанавливает значение первого параметра в элемент, указанный во втором
+параметре.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Если элемент не select и значение первого параметра строка, то в text
+  запишется строкоговое значение
+\item
+  Если элемент не select и значение первого параметра Map, то в text
+  запишется первое значение из Map
+\item
+  Если элемент не select и значение первого параметра пустая Map-а, то в
+  text запишется пустая строка
+\item
+  Если элемент select и первый параметр Map, то options будут записаны
+  значения из Map
+\item
+  Если элемент seleсt и первый параметр пустая Map, то будут удалены все
+  options и в text будет устанвлена пустая строка.
+\item
+  Если элемент select и значение первого параметра строка, то будет
+  добавлен один option c label и text равный значение второго параметра.
+\end{enumerate}
+
+Возвращает: \protect\hyperlink{string}{string} - Значение второго
+параметра (идентификатор элемента)
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+Параметр & Тип & Описание\tabularnewline
+\midrule
+\endhead
+value & \protect\hyperlink{string}{string} \textbar{} DLMap & Новое
+значение элемента\tabularnewline
+id & \protect\hyperlink{string}{string} & Идентификатор
+элемента\tabularnewline
+\bottomrule
+\end{longtable}
+
+\textbf{Example}
+
+\begin{verbatim}
+Элемент:
+
+<form>
+<text id="1" _parentId="0" label="Наименование товара" style="text" type="2">Ручка шариковая для сотрудника</text>
+</form>
+
+1. setValue([Значение 1],[this]) - установит в текущий элемент значение test
+
+Результат:
+
+<form>
+<text id="1" _parentId="0" label="Наименование товара" style="text" type="2">Значение 1</text>
+</form>
+
+2. setValue([DLMap{"1": "Значение 1", "2": "Значение 2"}], [this])
+
+Результат:
+
+<form>
+<text id="1" _parentId="0" label="Наименование товара" style="text" type="2">Значение 1</text>
+</form>
+
+3. setValue([DLMap{}], [this])
+
+Результат:
+
+<form>
+<text id="1" _parentId="0" label="Наименование товара" style="text" type="2"></text>
+</form>
+
+Элемент:
+
+<form>
+<select id="f1"> Выбранное значение
+<option id="f1_0" label="Отсутствует оплата за замещение должностей">Выбранное значение</option>
+</select>
+</form>
+
+4. setValue([DLMap{"1": "Значение 1", "2": "Значение 2"}], [this])
+
+Результат:
+
+<form>
+<select id="f1"> Выбранное значение
+<option id="1" label="Значение 1">1</option>
+<option id="2" label="Значение 2">2</option>
+</select>
+</form>
+
+5. setValue([DLMap{}], [this])
+
+Результат:
+
+<form>
+<select id="f1">
+</select>
+</form>
+
+6.setValue([Значение 1],[this])
+
+Результат:
+
+<form>
+<select id="f1"> Выбранное значение
+<option id="Значение 1" label="Значение 1">Значение 1</option>
+</select>
+</form>
+\end{verbatim}
+
+\hypertarget{getuserattr-string-boolean}{%
+\section{\texorpdfstring{getUser(attr) ->
+\protect\hyperlink{string}{string} \textbar{}
+boolean}{getUser(attr) -> string \textbar{} boolean}}\label{getuserattr-string-boolean}}
+
+Функция возвращает информацию о пользователе
+
+Возвращает: \protect\hyperlink{string}{string} \textbar{} boolean
+- Информация о пользователе
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+Параметр & Тип & Описание\tabularnewline
+\midrule
+\endhead
+attr & \protect\hyperlink{string}{string} & Значение
+агрумента\tabularnewline
+\bottomrule
+\end{longtable}
+
+\textbf{Example}
+
+\begin{verbatim}
+Допустимые значения агрумента:
+
+getuser(fio)
+getuser(firstName)
+getuser(secondName)
+getuser(middleName)
+getuser(tabNum)
+getuser(departName)
+getuser(position) - Должность
+getuser(vsp)
+getuser(address)
+getuser(phone)
+getuser(phoneInner)
+getuser(phoneMobile)
+getuser(identificator)
+getuser(id)
+getuser(kadrCode)
+getuser(category)
+getuser(terbank)
+getuser(findByTabno)
+getuser(territoryCode)
+\end{verbatim}
+
+\hypertarget{runargs-boolean}{%
+\section{run(args) -> boolean}\label{runargs-boolean}}
+
+Выполняет вложенные выражения. Порядок выполнения выражений не
+определен. Функция доступна только в выражениях динамического языка.
+
+Возвращает: boolean - Возвращает всегда ``true''
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Описание\tabularnewline
+\midrule
+\endhead
+args & Список выражений динамического языка\tabularnewline
+\bottomrule
+\end{longtable}
+
+\textbf{Example}
+
+\begin{verbatim}
+run([setValue([1],[id1])],[setValue([2],[id2])],[setValue([3],[id3])])
+\end{verbatim}
+
+\hypertarget{ifcondition-trueexpr-falseexpr-boolean}{%
+\section{if(condition, trueExpr, falseExpr) ->
+boolean}\label{ifcondition-trueexpr-falseexpr-boolean}}
+
+Вычисляет выражение в первом аргументе, если результат вычислений равно
+true то выполняется выражение во втором аргументе, иначе третий
+
+Возвращает: boolean - Возвращает значение первого аргумента
+true/false
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Описание\tabularnewline
+\midrule
+\endhead
+condition & Условие\tabularnewline
+trueExpr & Выражение 1\tabularnewline
+falseExpr & Выражение 2\tabularnewline
+\bottomrule
+\end{longtable}
+
+\textbf{Example}
+
+\begin{verbatim}
+if([idDigit([3])],[setValue([Число],[this])],[setValue([Строка],[this])])
+\end{verbatim}
+
+\hypertarget{isinargs-boolean}{%
+\section{isIn(args) -> boolean}\label{isinargs-boolean}}
+
+Провереряет первый аргумент равен одному из следующих аргументов
+
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+Параметр & Тип & Описание\tabularnewline
+\midrule
+\endhead
+args & DLMap \textbar{} * & Список параметров\tabularnewline
+\bottomrule
+\end{longtable}
+
+\textbf{Example}
+
+\begin{verbatim}
+isIn([1],[2],[56],[1])
+\end{verbatim}
+
+\hypertarget{isnotinargs-boolean}{%
+\section{isNotIn(args) -> boolean}\label{isnotinargs-boolean}}
+
+Провереряет первый аргумент не равен одному из следующих аргументов
+
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Описание\tabularnewline
+\midrule
+\endhead
+args & Список параметров\tabularnewline
+\bottomrule
+\end{longtable}
+
+\textbf{Example}
+
+\begin{verbatim}
+isNotIn([1],[2],[56],[1])
+\end{verbatim}
+
+\hypertarget{isdigitarg-boolean}{%
+\section{isDigit(arg) -> boolean}\label{isdigitarg-boolean}}
+
+Проверяет является ли заданный аргумент числом
+
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Описание\tabularnewline
+\midrule
+\endhead
+arg & Аргумент\tabularnewline
+\bottomrule
+\end{longtable}
+
+\textbf{Example}
+
+\begin{verbatim}
+isDigit([34])
+\end{verbatim}
+
+\hypertarget{callexpr-id-string}{%
+\section{\texorpdfstring{call(expr, id) ->
+\protect\hyperlink{string}{string}}{call(expr, id) -> string}}\label{callexpr-id-string}}
+
+Выполняет команду динамического языка, переданную в первом параметре над
+элементом второго параметра, поддерживает выражения с асинхронными
+вызовами.
+
+Возвращает: \protect\hyperlink{string}{string} - Возвращает
+идентификатор второго аргумента
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+Параметр & Тип & Описание\tabularnewline
+\midrule
+\endhead
+expr & & Выражение на динамическом языке\tabularnewline
+id & \protect\hyperlink{string}{string} & Идентификатор
+элемента\tabularnewline
+\bottomrule
+\end{longtable}
+
+\textbf{Example}
+
+\begin{verbatim}
+call([setValue([test],[this])],[id])
+\end{verbatim}
+
+\hypertarget{iamarg-boolean}{%
+\section{IAm(arg) -> boolean}\label{iamarg-boolean}}
+
+Функция проверяет является ли пользователь приложения заявителем,
+иницатором или согласующим лицом в текущем обращении
+
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Описание\tabularnewline
+\midrule
+\endhead
+arg & Параметр может принимать значения creator, initiator или
+approver\tabularnewline
+\bottomrule
+\end{longtable}
+
+\textbf{Example}
+
+\begin{verbatim}
+iAm([creator])
+\end{verbatim}
+
+\hypertarget{gettextsmap-dlmap}{%
+\section{getTexts(map) -> DLMap}\label{gettextsmap-dlmap}}
+
+Возвращает Map которая в value содержит видимые значения ``label''
+option-элементов.
+
+Возвращает: DLMap - Возвращает Map которая в value содержит
+видимые значения ``label'' option-элементов.
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+Параметр & Тип & Описание\tabularnewline
+\midrule
+\endhead
+map & DLMap & Map-а ключи которой содержат id элементов на
+форме\tabularnewline
+\bottomrule
+\end{longtable}
+
+\textbf{Example}
+
+\begin{verbatim}
+Наример, если в getTexts передать Map {"f1": "-"} c id элемента "f1" и выполнить над формой
+
+<form>
+<select id="f1"> Значение 1
+<option id="f1_0" label="Отсутствует оплата за замещение должностей">Значение 1</option>
+</select>
+</form>
+
+Функция вернет Map структуру вида {"f1_Отсутствует оплата за замещение должностей" :
+"Отсутствует оплата за замещение должностей"}
+\end{verbatim}
+
+\hypertarget{getvaluesmap-dlmap}{%
+\section{getValues(map) -> DLMap}\label{getvaluesmap-dlmap}}
+
+Возвращает Map которая в value содержит значения ``text''
+option-элементов.
+
+Возвращает: DLMap - Возвращает Map которая в value содержит
+значения ``text'' option элементов.
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+Параметр & Тип & Описание\tabularnewline
+\midrule
+\endhead
+map & DLMap & Map ключи которой содержат id элементов на
+форме\tabularnewline
+\bottomrule
+\end{longtable}
+
+\textbf{Example}
+
+\begin{verbatim}
+Наример, если в getValues передать Map {"f1": "-"} c id элемента "f1" и выполнить над формой
+
+<form>
+<select id="f1"> Значение 1
+<option id="f1_0" label="Отсутствует оплата за замещение должностей">Значение 1</option>
+</select>
+</form>
+
+Функция вернет Map структуру {"f1_Отсутствует оплата за замещение должностей" :
+"Значение 1"}
+\end{verbatim}
+
+\hypertarget{findattr-value-group-dlmap}{%
+\section{find(attr, value, group) ->
+DLMap}\label{findattr-value-group-dlmap}}
+
+Универсальная функция, выполняет поиск элементов в зависимисти от
+первого аргумента. Если первый аргумент равен ``id'' то выполняется
+поиск элементов, id которых начинается со второго аргумента. Если первый
+аргумент равен ``type'', то выполняется поиск элементов, sbtype - тип
+которых равен второму аргументу. В третьем параметре можно передать id
+группы в которой нужно выполнить поиск.
+
+Возвращает: DLMap - Map в которой ключи это id найденных
+элементов, а value их значения\\
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+\begin{minipage}[b]{0.30\columnwidth}\raggedright
+Param\strut
+\end{minipage} & \begin{minipage}[b]{0.30\columnwidth}\raggedright
+Type\strut
+\end{minipage} & \begin{minipage}[b]{0.30\columnwidth}\raggedright
+Description\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+attr\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+\protect\hyperlink{string}{string}\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Атрбут по которому будет выполнен поиск, принимает значения ``id'' или
+``type''\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+value\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+\protect\hyperlink{string}{string}\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Значение для поиска\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+group\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+\protect\hyperlink{string}{string}\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Идентификатор группы в которой будет выполнен поиск\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\textbf{Example}
+
+\begin{verbatim}
+Пример формы:
+
+form>
+<text id="f1" _parentId="0" label="Наименование товара" style="text" type="2">Ручка шариковая для сотрудника</text>
+<select id="f2" label="Вопрос" mandatory="true" sbcommand="" sbcopyinfo="false" sbfield="" sbmask="" sbmodify="true" sbstyle="" sbtask="" sbtitle="" sbtype="suggest" setGroupId="" style="combo" type="2" visible="true" width="">
+<option id="id0empty" label=""/>
+<option id="id00" label="Отсутствует оплата за работу в ночное время">a1</option>
+<option id="id01" label="Отсутствует оплата за замещение должностей">a2</option>
+</select>
+</form>
+
+1. find([id], [f])
+
+Результат:
+
+DLMap {"f1": "Ручка шариковая для сотрудника","f2": ""}
+
+2. find([type],[suggest])
+
+Результат:
+
+DLMap {"f2": ""}
+\end{verbatim}
+
+\hypertarget{plusargs}{%
+\section{plus(args) ->}\label{plusargs}}
+
+Универсальная функция сложения, которая умеет складывать числа, строки и
+время в формате HH:MM (см. примеры) Первый аргумент может использоваться
+для формата чисел (для форматирования используется реализация
+\href{https://docs.oracle.com/javase/7/docs/api/java/text/DecimalFormat.html}{Java
+DecimalFormat})
+
+Возвращает: Результат сложения
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Описание\tabularnewline
+\midrule
+\endhead
+args & Список аргументов\tabularnewline
+\bottomrule
+\end{longtable}
+
+\textbf{Example}
+
+\begin{verbatim}
+plus([1],[2],[3])
+6
+plus([],[],[1],[],[2],[3],[],[4],[],[])
+10
+plus([1],[3],[a])
+13a
+plus([1],[01:02],[3])
+66
+plus([a],[01:02],[3])
+a01:023
+plus([#0.00],[123],[0,0000001])
+123.00
+plus([1],[DLMap{a : 1, b: 2, c: 3}],[3])
+10
+plus([1],[DLMap{a : 01:00, b: 2, c: 3}],[3])
+69
+plus([a],[DLMap{a : 01:00, b: 2, c: 3}],[3])
+a01:00233
+\end{verbatim}
+
+\hypertarget{minusargs}{%
+\section{minus(args) -> *}\label{minusargs}}
+
+Функция вычитания Первый аргумент может использоваться для формата чисел
+(для форматирования используется реализация
+\href{https://docs.oracle.com/javase/7/docs/api/java/text/DecimalFormat.html}{Java
+DecimalFormat})
+
+Возвращает: * - Результат вычитания из первого аргумента всех
+последующих аргументов
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Описание\tabularnewline
+\midrule
+\endhead
+args & Числа, например {[}1{]},{[}2{]},{[}3{]}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\textbf{Example}
+
+\begin{verbatim}
+minus([4],[2],[1])
+1
+minus([#0.00],[123,0000002],[0,0000001])
+123.00
+\end{verbatim}
+
+\hypertarget{mulargs}{%
+\section{mul(args) -> *}\label{mulargs}}
+
+Функция умножения Первый аргумент может использоваться для формата чисел
+(для форматирования используется реализация
+\href{https://docs.oracle.com/javase/7/docs/api/java/text/DecimalFormat.html}{Java
+DecimalFormat})
+
+Возвращает: * - Результат умножения
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Описание\tabularnewline
+\midrule
+\endhead
+args & Числа, например {[}1{]},{[}2{]},{[}3{]}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{divargs}{%
+\section{div(args) -> *}\label{divargs}}
+
+Функция деления Первый аргумент может использоваться для формата чисел
+(для форматирования используется реализация
+\href{https://docs.oracle.com/javase/7/docs/api/java/text/DecimalFormat.html}{Java
+DecimalFormat})
+
+Возвращает: * - Результат деления
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Описание\tabularnewline
+\midrule
+\endhead
+args & Числа, например {[}1{]},{[}2{]},{[}3{]}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{indofstring-substring-number}{%
+\section{indOf(string, substring) -> number \textbar{}
+*}\label{indofstring-substring-number}}
+
+Возвращает позицию с которой начинается подстрока substring в строке
+source
+
+Возвращает: number \textbar{} * - Позиция в строке
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+Параметр & Тип & Описание\tabularnewline
+\midrule
+\endhead
+string & DLMap \textbar{} \protect\hyperlink{string}{string} &
+Строка\tabularnewline
+substring & DLMap \textbar{} \protect\hyperlink{string}{string} &
+Искомая подстрока\tabularnewline
+\bottomrule
+\end{longtable}
+
+\textbf{Example}
+
+\begin{verbatim}
+indOf([console.log],[ole])
+4
+\end{verbatim}
+
+\hypertarget{substrstring-start-end-string}{%
+\section{\texorpdfstring{substr(string, start, end) ->
+\protect\hyperlink{string}{string}}{substr(string, start, end) -> string}}\label{substrstring-start-end-string}}
+
+Возвращает подстроку с позиции start до позиции end
+
+Возвращает: \protect\hyperlink{string}{string} - Подстрока
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+Параметр & Тип & Описание\tabularnewline
+\midrule
+\endhead
+string & \protect\hyperlink{string}{string} \textbar{} DLMap & Строка в
+которой произоводится поиск\tabularnewline
+start & number \textbar{} * & Начальная позиция\tabularnewline
+end & number \textbar{} * & Конечная позиция (не включая)\tabularnewline
+\bottomrule
+\end{longtable}
+
+\textbf{Example}
+
+\begin{verbatim}
+substr([console.log], [2], [4])
+\end{verbatim}
+
+\hypertarget{lenstring-number}{%
+\section{len(string) -> number \textbar{} *}\label{lenstring-number}}
+
+Возвращает длину строки
+
+Возвращает: number \textbar{} * - Длина строки
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+Параметр & Тип & Описание\tabularnewline
+\midrule
+\endhead
+string & DLMap \textbar{} \protect\hyperlink{string}{string} &
+Строка\tabularnewline
+\bottomrule
+\end{longtable}
+
+\textbf{Example}
+
+\begin{verbatim}
+len([console.log])
+11
+\end{verbatim}
+
+\hypertarget{copygroupgroupid-id-group-string}{%
+\section{\texorpdfstring{copyGroup(groupId, id, group) ->
+\protect\hyperlink{string}{string}}{copyGroup(groupId, id, group) -> string}}\label{copygroupgroupid-id-group-string}}
+
+Копирует группу элементов. Поддерживает два вида групп: группировка по
+атрибуту setGroupId (ПОДРУГА) или sbgroup (SMIT); группировка по типу
+элемента - (object type) group. Возвращает второй аргумент.
+
+Возвращает: \protect\hyperlink{string}{string} - Значение второго
+аргумента
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+\begin{minipage}[b]{0.30\columnwidth}\raggedright
+Param\strut
+\end{minipage} & \begin{minipage}[b]{0.30\columnwidth}\raggedright
+Type\strut
+\end{minipage} & \begin{minipage}[b]{0.30\columnwidth}\raggedright
+Description\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+groupId\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+\protect\hyperlink{string}{string}\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Идентификатор группы\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+id\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+\protect\hyperlink{string}{string}\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Идентификатор\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+group\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+\protect\hyperlink{string}{string}\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Идентификтор группы в которой нужно выполнить копирование группы\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\textbf{Example}
+
+\begin{verbatim}
+copyGroup([group1],[f1])
+
+Пример формы:
+
+<form>
+<text id="f1" setGroupId="group1" _parentId="0" label="Наименование товара" style="text" type="2">Ручка шариковая для сотрудника</text>
+<select id="f2" setGroupId="group1" label="Вопрос" mandatory="true" sbcommand="" sbcopyinfo="false" sbfield="" sbmask="" sbmodify="true" sbstyle="" sbtask="" sbtitle="" sbtype="suggest" setGroupId="" style="combo" type="2" visible="true" width="">
+<option id="id0empty" label=""/>
+<option id="id00" label="Отсутствует оплата за работу в ночное время">a1</option>
+<option id="id01" label="Отсутствует оплата за замещение должностей">a2</option>
+</select>
+</form>
+
+Результат:
+
+form>
+<text id="f1" setGroupId="group1" _parentId="0" label="Наименование товара" style="text" type="2">Ручка шариковая для сотрудника</text>
+<select id="f2" setGroupId="group1" label="Вопрос" mandatory="true" sbcommand="" sbcopyinfo="false" sbfield="" sbmask="" sbmodify="true" sbstyle="" sbtask="" sbtitle="" sbtype="suggest" setGroupId="" style="combo" type="2" visible="true" width="">
+<option id="id0empty" label=""/>
+<option id="id00" label="Отсутствует оплата за работу в ночное время">a1</option>
+<option id="id01" label="Отсутствует оплата за замещение должностей">a2</option>
+</select>
+<text id="f1_1" setGroupId="group1_1" _parentId="0" label="Наименование товара" style="text" type="2">Ручка шариковая для сотрудника</text>
+<select id="f2_1" setGroupId="group1_1" label="Вопрос" mandatory="true" sbcommand="" sbcopyinfo="false" sbfield="" sbmask="" sbmodify="true" sbstyle="" sbtask="" sbtitle="" sbtype="suggest" setGroupId="" style="combo" type="2" visible="true" width="">
+<option id="id0empty" label=""/>
+<option id="id00" label="Отсутствует оплата за работу в ночное время">a1</option>
+<option id="id01" label="Отсутствует оплата за замещение должностей">a2</option>
+</select>
+</form>
+
+copyGroup([groupid],[f1])
+
+Пример формы:
+
+<form>
+<group id="groupid" label="Наименование товара" style="group" type="2">
+<text id="f1" _parentId="0" label="Наименование товара" style="text" type="2">Ручка шариковая для сотрудника</text>
+<select id="f2" label="Вопрос" mandatory="true" sbcommand="" sbcopyinfo="false" sbfield="" sbmask="" sbmodify="true" sbstyle="" sbtask="" sbtitle="" sbtype="suggest" setGroupId="" style="combo" type="2" visible="true" width="">
+<option id="id0empty" label=""/>
+<option id="id00" label="Отсутствует оплата за работу в ночное время">a1</option>
+<option id="id01" label="Отсутствует оплата за замещение должностей">a2</option>
+</select>
+</group>
+</form>
+
+Результат:
+
+<form>
+<group id="groupid" label="Наименование товара" style="group" type="2">
+<text id="f1" _parentId="0" label="Наименование товара" style="text" type="2">Ручка шариковая для сотрудника</text>
+<select id="f2" label="Вопрос" mandatory="true" sbcommand="" sbcopyinfo="false" sbfield="" sbmask="" sbmodify="true" sbstyle="" sbtask="" sbtitle="" sbtype="suggest" setGroupId="" style="combo" type="2" visible="true" width="">
+<option id="id0empty" label=""/>
+<option id="id00" label="Отсутствует оплата за работу в ночное время">a1</option>
+<option id="id01" label="Отсутствует оплата за замещение должностей">a2</option>
+</select>
+</group>
+<group id="groupid_1" label="Наименование товара" style="group" type="2">
+<text id="f1_1" _parentId="0" label="Наименование товара" style="text" type="2">Ручка шариковая для сотрудника</text>
+<select id="f2_1" label="Вопрос" mandatory="true" sbcommand="" sbcopyinfo="false" sbfield="" sbmask="" sbmodify="true" sbstyle="" sbtask="" sbtitle="" sbtype="suggest" setGroupId="" style="combo" type="2" visible="true" width="">
+<option id="id0empty" label=""/>
+<option id="id00" label="Отсутствует оплата за работу в ночное время">a1</option>
+<option id="id01" label="Отсутствует оплата за замещение должностей">a2</option>
+</select>
+</group>
+</form>
+\end{verbatim}
+
+\hypertarget{getdistanceargs-dlmap}{%
+\section{getDistance(args) -> DLMap}\label{getdistanceargs-dlmap}}
+
+Возвращает из Яндекса расстояние между координатами
+
+Возвращает: DLMap - Словарь со значениями distance - расстояние в
+метрах, distance\_text - расстояних в км., time - время поездки в
+секундах, time\_text - время в часах
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+Параметр & Тип & Описание\tabularnewline
+\midrule
+\endhead
+args & DLMap & Cловарь состоящий из координат
+``широта:долгота''\tabularnewline
+\bottomrule
+\end{longtable}
+
+\textbf{Example}
+
+\begin{verbatim}
+address =   { // "longitude:latitude:GUID"
+                 "a":"37.589283:55.745850:GUID"},
+             "b":"36.715736:55.745850:GUID",
+             "c":"37.515736:55.673816:GUID",
+             "d":"37.715736:55.773816:GUID",
+           }
+
+getDistance([address])
+
+Резульат:
+
+DLMap {
+ distance: '353637.28597939014',
+ distance_text: '350 км',
+ time: '25415.397077530622',
+ time_text: '7 ч 4 мин'
+ }
+\end{verbatim}
+
+\hypertarget{execute3dtasktask-arg0-arg1-argn-map-dlmap}{%
+\section{execute3DTask(TASK, ARG0, ARG1, ARGN, map) ->
+DLMap}\label{execute3dtasktask-arg0-arg1-argn-map-dlmap}}
+
+Получение данных из автосполнятора в виде 3DMap
+
+Возвращает: DLMap - Ответ от автосполнятора
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+Параметр & Тип & Описание\tabularnewline
+\midrule
+\endhead
+TASK & DLMap \textbar{} \protect\hyperlink{string}{string} & Название
+задачи в автосполняторе\tabularnewline
+ARG0 & DLMap \textbar{} \protect\hyperlink{string}{string} &
+Произвольный аргумет 1\tabularnewline
+ARG1 & DLMap \textbar{} \protect\hyperlink{string}{string} &
+Произвольный аргумет 2\tabularnewline
+ARGN & DLMap \textbar{} \protect\hyperlink{string}{string} &
+Произвольный аргумет N\tabularnewline
+map & DLMap & Произвольный аргумет\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{executetasktask-arg0-arg1-argn-object}{%
+\section{executeTask(TASK, ARG0, ARG1, ARGN) -> Object \textbar{}
+*}\label{executetasktask-arg0-arg1-argn-object}}
+
+Получение данных из автосполнятора
+
+Возвращает: Object \textbar{} * - Ответ от автосполнятора
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+Параметр & Тип & Описание\tabularnewline
+\midrule
+\endhead
+TASK & DLMap \textbar{} \protect\hyperlink{string}{string} & Название
+задачи в автосполняторе\tabularnewline
+ARG0 & DLMap \textbar{} \protect\hyperlink{string}{string} &
+Произвольный аргумет\tabularnewline
+ARG1 & DLMap \textbar{} \protect\hyperlink{string}{string} &
+Произвольный аргумет\tabularnewline
+ARGN & DLMap \textbar{} \protect\hyperlink{string}{string} &
+Произвольный аргумет\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{getusersbyorganizationrequestrealtyobj-text-object}{%
+\section{getUsersByOrganizationRequest(realtyObj, text) ->
+Object}\label{getusersbyorganizationrequestrealtyobj-text-object}}
+
+Получение пользователя по подразделению
+
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+Параметр & Тип & Описание\tabularnewline
+\midrule
+\endhead
+realtyObj & DLMap \textbar{} \protect\hyperlink{string}{string} &
+Идентификатор обьекта недвижимости\tabularnewline
+text & DLMap \textbar{} \protect\hyperlink{string}{string} & Поисковый
+запрос\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{setvaluesarg0-arg1-arg2-arg3-arg4}{%
+\section{setValues(ARG0, ARG1, ARG2, ARG3, ARG4)
+->}\label{setvaluesarg0-arg1-arg2-arg3-arg4}}
+
+Выполняет комманды 3DMaps над динамичской формой. Поддерживаются
+команды: attr, value, new, valueselected, command, delete, beforesave
+
+Возвращает: null id - элемент над которым выполняет 3DMap(может
+отсутствовать, если запрос к АИ) tid - идентификатор запроса который
+выполняется в рамках обработки callback - функция обработки
+isDefaultSettings - включает или отключает silentMode\\
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+Параметр & Тип & Описание\tabularnewline
+\midrule
+\endhead
+ARG0 & 3DMap & map 3DMap структруа с коммандами\tabularnewline
+ARG1 & \protect\hyperlink{string}{string} & id or tid\tabularnewline
+ARG2 & \protect\hyperlink{string}{string} \textbar{} function & tid or
+callback\tabularnewline
+ARG3 & function \textbar{} undefined & callback\tabularnewline
+ARG4 & boolean \textbar{} undefined & isDefaultSettings\tabularnewline
+\bottomrule
+\end{longtable}
+
+\textbf{Example}
+
+\begin{verbatim}
+Пример 3DMap.
+[
+ {
+   "id": "cost",
+   "actions": [
+     {
+       "action": "value",
+       "values": [
+         {
+           "id": "22.25",
+           "value": "22.25"
+         }
+       ]
+     },
+     {
+       "action": "command",
+       "values": [
+         {
+           "id": "100",
+           "value": "setSaveEnabled([true],[cost])"
+         }
+       ]
+     },
+     {
+       "action": "attr",
+       "values": [
+         {
+           "id": "error",
+           "value": ""
+         },
+         {
+           "id": "rightValue",
+           "value": "true"
+         }
+       ]
+     }
+   ]
+ }
+ ]
+// map, id, tid, callback, isDefaultSettings
+\end{verbatim}
+
+\hypertarget{getvalueid}{%
+\section{getValue(id) ->}\label{getvalueid}}
+
+Возвращает текущее значение элемента
+
+Возвращает: DLMap со значениями элемента или пустую
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Описание\tabularnewline
+\midrule
+\endhead
+id & id элемента\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{setmandatorybool-id}{%
+\section{setMandatory(bool, id) ->}\label{setmandatorybool-id}}
+
+Функция устанавливает обязательность заполнения контрола
+
+Возвращает: id контрола
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+Параметр & Тип & Описание\tabularnewline
+\midrule
+\endhead
+bool & &\tabularnewline
+id & String \textbar{} DLMap & id контола\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{setvisiblebool-id}{%
+\section{setVisible(bool, id) ->}\label{setvisiblebool-id}}
+
+Функция устанавливает признак видимости элемента на форме
+
+Возвращает: id контола
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+Параметр & Тип & Описание\tabularnewline
+\midrule
+\endhead
+bool & &\tabularnewline
+id & String \textbar{} DLMap & id контола\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{setenabledbool-id}{%
+\section{setEnabled(bool, id) ->}\label{setenabledbool-id}}
+
+Функция устанавливает признак возможности редактирования элемента
+
+Возвращает: id контола
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+Параметр & Тип & Описание\tabularnewline
+\midrule
+\endhead
+bool & &\tabularnewline
+id & String \textbar{} DLMap & id контола\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{setvalidbool-description-id}{%
+\section{setValid(bool, description,
+id)}\label{setvalidbool-description-id}}
+
+Функция устанавливает контролу признак ошибки
+
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Описание\tabularnewline
+\midrule
+\endhead
+bool &\tabularnewline
+description & Текст ошибки\tabularnewline
+id &\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{setselectedvalueval-id}{%
+\section{setSelectedValue(val, id) ->}\label{setselectedvalueval-id}}
+
+Функция устанавливает выбранное значение для контролов типа Select
+
+Возвращает: id элемента
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+Параметр & Тип & Описание\tabularnewline
+\midrule
+\endhead
+val & String \textbar{} DLMap & Значение option-элемнта - элемента
+списка\tabularnewline
+id & & id элемента\tabularnewline
+\bottomrule
+\end{longtable}
+
+\textbf{Example}
+
+\begin{verbatim}
+setselectedvalue([a1],[f2])
+
+Пример формы:
+
+<form>
+<select id="f2" setGroupId="group1" label="Вопрос" mandatory="true" sbcommand="" sbcopyinfo="false" sbfield="" sbmask="" sbmodify="true" sbstyle="" sbtask="" sbtitle="" sbtype="suggest" setGroupId="" style="combo" type="2" visible="true" width="">
+<option id="id0empty" label=""/>
+<option id="id00" label="Отсутствует оплата за работу в ночное время">a1</option>
+<option id="id01" label="Отсутствует оплата за замещение должностей">a2</option>
+</select>
+</form>
+
+Результат:
+
+<form>
+<select id="f2" setGroupId="group1" label="Вопрос" mandatory="true" sbcommand="" sbcopyinfo="false" sbfield="" sbmask="" sbmodify="true" sbstyle="" sbtask="" sbtitle="" sbtype="suggest" setGroupId="" style="combo" type="2" visible="true" width="">
+<option id="id0empty" label=""/>a1
+<option id="id00" label="Отсутствует оплата за работу в ночное время">a1</option>
+<option id="id01" label="Отсутствует оплата за замещение должностей">a2</option>
+</select>
+</form>
+\end{verbatim}
+
+\hypertarget{setwidthval-id}{%
+\section{setWidth(val, id) ->}\label{setwidthval-id}}
+
+Функция устанавливает ширину контрола
+
+Возвращает: id элемента
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Описание\tabularnewline
+\midrule
+\endhead
+val & Значение ширины контрлоа\tabularnewline
+id & id элемента\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{gettextmap-id-dlmap}{%
+\section{getText(map, id) -> DLMap}\label{gettextmap-id-dlmap}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Если элемент не select, то возвращает map где ключ и значени value
+  элемента
+\item
+  Если элемент select и передан один аргумент - id элемента, то функция
+  вернет map с text и label выбранного option- элемента
+\item
+  Если элемент select который не имеент выбранных option-элементов, то
+  вернется map c одим пустым значением
+\item
+  Если первый аргумент функции map со значениями text - option элемнтов,
+  то функция вернет map с text и label option- элементов
+\end{enumerate}
+
+
+\begin{longtable}[]{@{}l@{}}
+\toprule
+Param\tabularnewline
+\midrule
+\endhead
+map\tabularnewline
+id\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ismandatoryid-boolean}{%
+\section{isMandatory(id) -> boolean}\label{ismandatoryid-boolean}}
+
+Возвращает обязательно ли поле для заполнения
+
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Описание\tabularnewline
+\midrule
+\endhead
+id & id элемента\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{isvisibleid-boolean}{%
+\section{isVisible(id) -> boolean}\label{isvisibleid-boolean}}
+
+Возвращает видимо ли поле на форме
+
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Описание\tabularnewline
+\midrule
+\endhead
+id & id элемента\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{isenabledid-boolean}{%
+\section{isEnabled(id) -> boolean}\label{isenabledid-boolean}}
+
+Возвращает доступен ли элемент для редактирования
+
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Описание\tabularnewline
+\midrule
+\endhead
+id & id элемента\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{isvalidid-boolean}{%
+\section{isValid(id) -> boolean}\label{isvalidid-boolean}}
+
+Возвращает правильно ли заполенен элемент формы
+
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Описание\tabularnewline
+\midrule
+\endhead
+id & id элемента\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{isfilemandatoryid-boolean}{%
+\section{isFileMandatory(id) ->
+boolean}\label{isfilemandatoryid-boolean}}
+
+Возвращает обязательность вложений при создании обращений
+
+\textbf{Tod}: why func has id of element in params
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Описание\tabularnewline
+\midrule
+\endhead
+id & id элемента\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{isfileenabledid-boolean}{%
+\section{isFileEnabled(id) -> boolean}\label{isfileenabledid-boolean}}
+
+Возвращает признак доступности вложений
+
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Описание\tabularnewline
+\midrule
+\endhead
+id & id элемента\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{clearid-string}{%
+\section{\texorpdfstring{clear(id) ->
+\protect\hyperlink{string}{string}}{clear(id) -> string}}\label{clearid-string}}
+
+Очищает значение элемента
+
+Возвращает: \protect\hyperlink{string}{string} - id элемента
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+Параметр & Тип & Описание\tabularnewline
+\midrule
+\endhead
+id & String \textbar{} DLMap & id элемента\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{setlist}{%
+\section{setList(\_labels, \_texts, id) ->}\label{setlist}}
+
+Устанавливает
+option-элементы
+
+Возвращает: \protect\hyperlink{string}{string} - id элемента
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+Параметр & Тип & Описание\tabularnewline
+\midrule
+\endhead
+\_labels & DLMap \textbar{} \protect\hyperlink{string}{string} & строка
+label разделенная pipe-символом\tabularnewline
+\_texts & DLMap \textbar{} \protect\hyperlink{string}{string} & строка
+text разделенная pipe-символом\tabularnewline
+id & & id элемента\tabularnewline
+\bottomrule
+\end{longtable}
+
+\textbf{Example}
+
+\begin{verbatim}
+setList([label1|label2|label3],[id1|id2|id3],[this])
+\end{verbatim}
+
+\hypertarget{setmaskvalue-id}{%
+\section{setMask(value, id)}\label{setmaskvalue-id}}
+
+Устанавливает маску ввода
+
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Описание\tabularnewline
+\midrule
+\endhead
+value & Маска ввода\tabularnewline
+id & id элемента\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{setfocusval-id}{%
+\section{setFocus(val, id)}\label{setfocusval-id}}
+
+Устанавливает фокус на элементе
+
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+Параметр & Тип & Описание\tabularnewline
+\midrule
+\endhead
+val & boolean & Значение\tabularnewline
+id & & id элемента\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{setmaxvalue-id}{%
+\section{setMax(value, id)}\label{setmaxvalue-id}}
+
+Устанавливает максимальное значение для элемента
+
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Описание\tabularnewline
+\midrule
+\endhead
+value & Максимальное значение\tabularnewline
+id & id элемента\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{setminvalue-id}{%
+\section{setMin(value, id)}\label{setminvalue-id}}
+
+Устанавливает минимальное значение для элемента
+
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Описание\tabularnewline
+\midrule
+\endhead
+value & Минимальное значение\tabularnewline
+id & id элемента\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{stringvalue-string}{%
+\section{\texorpdfstring{string(value) ->
+\protect\hyperlink{string}{string}}{string(value) -> string}}\label{stringvalue-string}}
+
+Возвращает строковое значение первого параметра
+
+Возвращает: \protect\hyperlink{string}{string} - Строковое
+значение первого параметра
+
+\begin{longtable}[]{@{}l@{}}
+\toprule
+Param\tabularnewline
+\midrule
+\endhead
+value\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{setbeforesavevalue-id-string}{%
+\section{\texorpdfstring{setBeforeSave(value, id) ->
+\protect\hyperlink{string}{string}}{setBeforeSave(value, id) -> string}}\label{setbeforesavevalue-id-string}}
+
+Устанавливает комманду, которая будет выполнена перед сохранением
+
+Возвращает: \protect\hyperlink{string}{string} - id элемента
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Описание\tabularnewline
+\midrule
+\endhead
+value & Комманда\tabularnewline
+id & id элемента\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{getapprovalstageid-string}{%
+\section{\texorpdfstring{getApprovalStage(id) ->
+\protect\hyperlink{string}{string}}{getApprovalStage(id) -> string}}\label{getapprovalstageid-string}}
+
+Возвращает название этапа согласования по обращению
+
+Возвращает: \protect\hyperlink{string}{string} - Название этапа
+согласования\\
+\textbf{Throws}:
+
+\begin{itemize}
+\tightlist
+\item
+  Error(``approvalStage у внешнего обьекта не определен'')
+\end{itemize}
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Описание\tabularnewline
+\midrule
+\endhead
+id & id элемента\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{setchecksignbool-id}{%
+\section{setCheckSign(bool, id)}\label{setchecksignbool-id}}
+
+Устанавливает признак подписания формы при сохранения обращения
+
+\textbf{Throws}:
+
+\begin{itemize}
+\tightlist
+\item
+  FunctionNotImplementedError
+\end{itemize}
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Описание\tabularnewline
+\midrule
+\endhead
+bool &\tabularnewline
+id & id элемента\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{setfilemandatorybool-id-string}{%
+\section{\texorpdfstring{setFileMandatory(bool, id) ->
+\protect\hyperlink{string}{string}}{setFileMandatory(bool, id) -> string}}\label{setfilemandatorybool-id-string}}
+
+Устаналивает признак обязательности вложения файла
+
+Возвращает: \protect\hyperlink{string}{string} - id элемента
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Описание\tabularnewline
+\midrule
+\endhead
+bool &\tabularnewline
+id & id элемента\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{openalerttype-message}{%
+\section{openAlert(type, message)}\label{openalerttype-message}}
+
+Открывает окно с сообщением
+
+\textbf{Throws}:
+
+\begin{itemize}
+\tightlist
+\item
+  FunctionNotImplementedError
+\end{itemize}
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Описание\tabularnewline
+\midrule
+\endhead
+type & Тип сообщения info, warning, error\tabularnewline
+message & Текст сообщения\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{setsaveenabledbool-id-string}{%
+\section{\texorpdfstring{setSaveEnabled(bool, id) ->
+\protect\hyperlink{string}{string}}{setSaveEnabled(bool, id) -> string}}\label{setsaveenabledbool-id-string}}
+
+Устанавливает признак доступности кнопкаи ``Сохранить''
+
+Возвращает: \protect\hyperlink{string}{string} - id элемента
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Описание\tabularnewline
+\midrule
+\endhead
+bool &\tabularnewline
+id & id элемента\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{setfileenabledbool-id-string}{%
+\section{\texorpdfstring{setFileEnabled(bool, id) ->
+\protect\hyperlink{string}{string}}{setFileEnabled(bool, id) -> string}}\label{setfileenabledbool-id-string}}
+
+Устанавливает признак доступности кнопки ``Вложить''
+
+Возвращает: \protect\hyperlink{string}{string} - id элемента
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Описание\tabularnewline
+\midrule
+\endhead
+bool &\tabularnewline
+id & id элемента\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{setexternalsystemextsystem-id-string}{%
+\section{\texorpdfstring{setExternalSystem(extsystem, id) ->
+\protect\hyperlink{string}{string}}{setExternalSystem(extsystem, id) -> string}}\label{setexternalsystemextsystem-id-string}}
+
+Устанавливает код внешней системы
+
+Возвращает: \protect\hyperlink{string}{string} - id элемента
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+\begin{minipage}[b]{0.30\columnwidth}\raggedright
+Param\strut
+\end{minipage} & \begin{minipage}[b]{0.30\columnwidth}\raggedright
+Type\strut
+\end{minipage} & \begin{minipage}[b]{0.30\columnwidth}\raggedright
+Description\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+extsystem\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+EXT\_SYSTEM\_SM \textbar{} EXT\_SYSTEM\_FRIEND\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Код внешней системы SM или FRIEND\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+id\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+id элемента\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{setinformationvisiblebool-id-string}{%
+\section{\texorpdfstring{setInformationVisible(bool, id) ->
+\protect\hyperlink{string}{string}}{setInformationVisible(bool, id) -> string}}\label{setinformationvisiblebool-id-string}}
+
+Устанавливает признак видимости поля ``Информация''
+
+Возвращает: \protect\hyperlink{string}{string} - id элемента
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Описание\tabularnewline
+\midrule
+\endhead
+bool &\tabularnewline
+id & элемента\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{setinitiatorvalue-id-string}{%
+\section{\texorpdfstring{setInitiator(value, id) ->
+\protect\hyperlink{string}{string}}{setInitiator(value, id) -> string}}\label{setinitiatorvalue-id-string}}
+
+Устанавливает инициатора в обращении
+
+Возвращает: \protect\hyperlink{string}{string} - id элемента
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Описание\tabularnewline
+\midrule
+\endhead
+value & Идентификатор инициатора\tabularnewline
+id & id элемента\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{setmultiflowbool-id}{%
+\section{setMultiFlow(bool, id) -> *}\label{setmultiflowbool-id}}
+
+Устанавливает признак мультипоточного ввода по шаблону
+
+Возвращает: * - id элемента
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Описание\tabularnewline
+\midrule
+\endhead
+bool &\tabularnewline
+id & id элемента\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{setredirectvalue-id-skipconvert}{%
+\section{setRedirect(value, id, skipConvert) ->
+*}\label{setredirectvalue-id-skipconvert}}
+
+Устанавливает ссылку на которую надо перейти
+
+Возвращает: * - id элемента
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+Параметр & Тип & Описание\tabularnewline
+\midrule
+\endhead
+value & \protect\hyperlink{string}{string} & Ссылка\tabularnewline
+id & \protect\hyperlink{string}{string} & id элемента\tabularnewline
+skipConvert & Boolean & не преобразовывать ссылку LD1 \textgreater{}
+LD2\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{setrelationshipobjectid-objecttype-id}{%
+\section{setRelationship(objectId, objectType, id) ->
+*}\label{setrelationshipobjectid-objecttype-id}}
+
+!Используется только с ПОДРУГа Функция устанавливает связь созданного
+обращения с обьектом типа objectType c номером objectId
+
+Возвращает: * - id элемента
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Описание\tabularnewline
+\midrule
+\endhead
+objectId & Номер обьекта\tabularnewline
+objectType & Тип обьекта CHANGE, CHECKLIST, INCIDENT, INTERACTION, ZNO,
+ZNU\tabularnewline
+id & id элемента\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{setadditionaltemplateextsystem-templateid-id}{%
+\section{setAdditionalTemplate(extsystem, templateId,
+id)}\label{setadditionaltemplateextsystem-templateid-id}}
+
+Устанавливает шаблона по которому нужно дополнительно создать обращение
+
+\textbf{Throws}:
+
+\begin{itemize}
+\tightlist
+\item
+  FunctionNotImplementedError
+\end{itemize}
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+\begin{minipage}[b]{0.30\columnwidth}\raggedright
+Param\strut
+\end{minipage} & \begin{minipage}[b]{0.30\columnwidth}\raggedright
+Type\strut
+\end{minipage} & \begin{minipage}[b]{0.30\columnwidth}\raggedright
+Description\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+extsystem\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+EXT\_SYSTEM\_SM \textbar{} EXT\_SYSTEM\_FRIEND\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Код внешней системы SM или FRIEND\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+templateId\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Идентификатор шаблона обращения\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+id\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+id элемента\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{setscoringvisiblebool-id-string}{%
+\section{\texorpdfstring{setScoringVisible(bool, id) ->
+\protect\hyperlink{string}{string}}{setScoringVisible(bool, id) -> string}}\label{setscoringvisiblebool-id-string}}
+
+Устанавливает признак видимости поля ``Скоринг'' в обращении
+
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Описание\tabularnewline
+\midrule
+\endhead
+bool &\tabularnewline
+id & id элемента\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{getsysdatevalue}{%
+\section{getSysDate(value) ->}\label{getsysdatevalue}}
+
+Возвращает смещение относительно текущей даты
+
+Возвращает: Дата
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Описание\tabularnewline
+\midrule
+\endhead
+value & Смещение в днях\tabularnewline
+\bottomrule
+\end{longtable}
+
+\textbf{Example}
+
+\begin{verbatim}
+getSysDate([+5]) - вернет текущую дату + 5 дней
+\end{verbatim}
+
+\hypertarget{getinitiatorvalue-string}{%
+\section{\texorpdfstring{getInitiator(value) ->
+\protect\hyperlink{string}{string}}{getInitiator(value) -> string}}\label{getinitiatorvalue-string}}
+
+Получение информации об инициаторе обращения
+
+Возвращает: \protect\hyperlink{string}{string} - Информация по
+параметру
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+\begin{minipage}[b]{0.47\columnwidth}\raggedright
+Param\strut
+\end{minipage} & \begin{minipage}[b]{0.47\columnwidth}\raggedright
+Description\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+value\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Параметр fio, domaincode, ou, tabnum, id, departcode, position, guid,
+email, vsp, tbcode\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{setminhoursvalue-id}{%
+\section{setMinHours(value, id) -> *}\label{setminhoursvalue-id}}
+
+Устаналивает минимальное значение в часах
+
+Возвращает: * - id элемента
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Описание\tabularnewline
+\midrule
+\endhead
+value & Значение часов в 24 - часовом формате\tabularnewline
+id & id элемента\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{setmaxhoursvalue-id}{%
+\section{setMaxHours(value, id) -> *}\label{setmaxhoursvalue-id}}
+
+Устаналивает максимальное значение в часах
+
+Возвращает: * - id элемента
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Описание\tabularnewline
+\midrule
+\endhead
+value & Значение часов в 24 - часовом формате\tabularnewline
+id & id элемента\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{setcontaincustomobjectsbool-id}{%
+\section{setContainCustomObjects(bool, id) ->
+*}\label{setcontaincustomobjectsbool-id}}
+
+Устанавливает признак того что созданное обращение будет содержать
+``хранимые'' обьекты, например обьет закупки, поездки и т.д.
+
+
+\begin{longtable}[]{@{}l@{}}
+\toprule
+Param\tabularnewline
+\midrule
+\endhead
+bool\tabularnewline
+id\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{getsizeparam}{%
+\section{getSize(param) -> *}\label{getsizeparam}}
+
+Возвращает количество option-элементов в элементе если передан
+идентификатор элемента или количество полей в DLMap если передана DLMap
+
+Возвращает: * - id элемента
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+Параметр & Тип & Описание\tabularnewline
+\midrule
+\endhead
+param & \protect\hyperlink{string}{string} \textbar{} DLMap & id
+элемента или DLMap\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{setstepvalue-id}{%
+\section{setStep(value, id) -> *}\label{setstepvalue-id}}
+
+Устанавливает шаг для выбора значения
+
+Возвращает: * - id элемента
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Описание\tabularnewline
+\midrule
+\endhead
+value & Размер шага\tabularnewline
+id & id элемента\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{setstylearg-value-id-string}{%
+\section{\texorpdfstring{setStyle(arg, value, id) ->
+\protect\hyperlink{string}{string}}{setStyle(arg, value, id) -> string}}\label{setstylearg-value-id-string}}
+
+Устанавливает стиль для атрибута
+
+Поддерживаемые стили:
+
+color - цвет элемента badge - текст badge - элемента badge-color - цвет
+badge - элемента width - ширина элемнта (только web-версии Лица ДРУГА)
+
+Возвращает: \protect\hyperlink{string}{string} - id элемента
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Описание\tabularnewline
+\midrule
+\endhead
+arg & Стиль\tabularnewline
+value & Значение\tabularnewline
+id & id элемента\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{compareleft-operand-rigth}{%
+\section{compare(left, operand,
+rigth)}\label{compareleft-operand-rigth}}
+
+Функция сравнения
+
+Доступны операторы сравнения \textgreater, \textgreater=, ==, \textless,
+\textless=
+
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Описание\tabularnewline
+\midrule
+\endhead
+left & Перый аргумент для сравнения\tabularnewline
+operand & Оператор сравнения\tabularnewline
+rigth & Второй аргумент для сравнения\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{setinitiatorvisiblebool-id-string}{%
+\section{\texorpdfstring{setInitiatorVisible(bool, id) ->
+\protect\hyperlink{string}{string}}{setInitiatorVisible(bool, id) -> string}}\label{setinitiatorvisiblebool-id-string}}
+
+Устаналивает признак видимости поля смены ВК
+
+Возвращает: \protect\hyperlink{string}{string} - id элемента
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Описание\tabularnewline
+\midrule
+\endhead
+bool &\tabularnewline
+id & id элемента\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{setdescriptiontext-id-string}{%
+\section{setDescription(text, id) ->
+String}\label{setdescriptiontext-id-string}}
+
+Устанавливает лейбл у элемента
+
+Возвращает: String - Идентификатор элемента
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+Параметр & Тип & Описание\tabularnewline
+\midrule
+\endhead
+text & String & Тексе лейбла\tabularnewline
+id & String & Идентификатор элемента\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{getrelatedid-string}{%
+\section{getRelatedId() -> String}\label{getrelatedid-string}}
+
+Возвращает идентификатор связанного обращения
+
+Возвращает: String - Идентификатор связанного обращения\\
+
+\hypertarget{setcopyvisiblebool-id-string}{%
+\section{setCopyVisible(bool, id) ->
+String}\label{setcopyvisiblebool-id-string}}
+
+Устанавливает видимость кнопки копирования шаблона
+
+Возвращает: String - Возвращает второй аргумент
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Тип\tabularnewline
+\midrule
+\endhead
+bool & Boolean\tabularnewline
+id & String\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{setdeclinevisiblebool-id-string}{%
+\section{setDeclineVisible(bool, id) ->
+String}\label{setdeclinevisiblebool-id-string}}
+
+Устанавливает видимость кнопки ``Отменить обращение''
+
+Возвращает: String - Возвращает второй аргумент
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Тип\tabularnewline
+\midrule
+\endhead
+bool & Boolean\tabularnewline
+id & String\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{setclosevisiblebool-id-string}{%
+\section{setCloseVisible(bool, id) ->
+String}\label{setclosevisiblebool-id-string}}
+
+Устанавливает видимость кнопки ``Закрыть группу''
+
+Возвращает: String - Возвращает второй аргумент
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Тип\tabularnewline
+\midrule
+\endhead
+bool & Boolean\tabularnewline
+id & String\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{getclienttype-string}{%
+\section{\texorpdfstring{getClientType() ->
+\protect\hyperlink{string}{string}}{getClientType() -> string}}\label{getclienttype-string}}
+
+Возвращает тип клиента. Возможные значение: ios, android, web-sigma,
+web-alpha
+
+Возвращает: \protect\hyperlink{string}{string} - Тип клиента\\
+
+\hypertarget{ismobileclient-boolean}{%
+\section{isMobileClient() -> boolean}\label{ismobileclient-boolean}}
+
+Возвращает является ли клиент мобильным приложением
+
+
+\hypertarget{iswebclient-boolean}{%
+\section{isWebClient() -> boolean}\label{iswebclient-boolean}}
+
+Возвращает является ли клиент web-приложением
+
+
+\hypertarget{isiosclient-boolean}{%
+\section{isIOSClient() -> boolean}\label{isiosclient-boolean}}
+
+Возвращает является ли клиент iOs-приложением
+
+
+\hypertarget{isandroidclient-boolean}{%
+\section{isAndroidClient() -> boolean}\label{isandroidclient-boolean}}
+
+Возвращает является ли клиент Android-приложением
+
+
+\hypertarget{iswebsigmaclient-boolean}{%
+\section{isWebSigmaClient() ->
+boolean}\label{iswebsigmaclient-boolean}}
+
+Возвращает является ли клиент web sigma приложением
+
+
+\hypertarget{iswebalphaclient-boolean}{%
+\section{isWebAlphaClient() ->
+boolean}\label{iswebalphaclient-boolean}}
+
+Возвращает является ли клиент web alpha приложением
+
+
+\hypertarget{isface20}{%
+\section{isFace20()}\label{isface20}}
+
+Функция возвращает true если это web прложение face20 Костыль нужен для
+авто редиректа на /friendface если шаблон не работает на face20.
+Оставляем пока face20 не стабилизируется.
+
+
+\hypertarget{setactionvalue-id}{%
+\section{setAction(value, id) ->}\label{setactionvalue-id}}
+
+Устанавливает значение в атрибут sbaction элемента
+
+Возвращает: id
+
+\begin{longtable}[]{@{}l@{}}
+\toprule
+Param\tabularnewline
+\midrule
+\endhead
+value\tabularnewline
+id\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{setmodevalue-id}{%
+\section{setMode(value, id) ->}\label{setmodevalue-id}}
+
+Устанавливает значение в атрибут sbmode элемента
+
+Возвращает: id
+
+\begin{longtable}[]{@{}l@{}}
+\toprule
+Param\tabularnewline
+\midrule
+\endhead
+value\tabularnewline
+id\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{datediffstart-end-id}{%
+\section{dateDiff(start, end, id)}\label{datediffstart-end-id}}
+
+Возвращает разницу в днях
+
+
+\begin{longtable}[]{@{}l@{}}
+\toprule
+Param\tabularnewline
+\midrule
+\endhead
+start\tabularnewline
+end\tabularnewline
+id\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{iscreatemode-boolean}{%
+\section{isCreateMode() -> boolean}\label{iscreatemode-boolean}}
+
+Форма в режиме создания обращения
+
+
+\hypertarget{isopenmode-boolean}{%
+\section{isOpenMode() -> boolean}\label{isopenmode-boolean}}
+
+Форма в режиме созданного обращения
+
+
+\hypertarget{setsavevisiblebool-id-string}{%
+\section{setSaveVisible(bool, id) ->
+String}\label{setsavevisiblebool-id-string}}
+
+Устанавливает видимость кнопки сохранения шаблона
+
+Возвращает: String - Возвращает второй аргумент
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Тип\tabularnewline
+\midrule
+\endhead
+bool & Boolean\tabularnewline
+id & String\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{setvaluevalue-id-revertvalues-string}{%
+\section{\_setValue(value, id, revertValues) ->
+String}\label{setvaluevalue-id-revertvalues-string}}
+
+Устанавливает значение первого параметра в элемент, указанный во втором
+параметре.
+
+Возвращает: String - Возвращает второй аргумент
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+\begin{minipage}[b]{0.30\columnwidth}\raggedright
+Param\strut
+\end{minipage} & \begin{minipage}[b]{0.30\columnwidth}\raggedright
+Type\strut
+\end{minipage} & \begin{minipage}[b]{0.30\columnwidth}\raggedright
+Description\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+value\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+DLMap \textbar{} \protect\hyperlink{string}{string}\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+id\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+String\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+revertValues\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+bool \textbar{} undefined\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+управляет пердачей флага по перевёрнутым значениям в DLMap\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{runsbtaskel}{%
+\section{\_runSBTASK(el)}\label{runsbtaskel}}
+
+Запускает выполнение sbtask в случае если выполнются внутренние условия.
+
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Параметр & Тип\tabularnewline
+\midrule
+\endhead
+el & Element\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{getvaluebyuseruser-attr-isuser}{%
+\section{\_getValueByUser(user, attr, isUser)}\label{getvaluebyuseruser-attr-isuser}}
+
+Получаем общие кадровые данные по пользователю или инициатору.
+
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+\begin{minipage}[b]{0.30\columnwidth}\raggedright
+Param\strut
+\end{minipage} & \begin{minipage}[b]{0.30\columnwidth}\raggedright
+Type\strut
+\end{minipage} & \begin{minipage}[b]{0.30\columnwidth}\raggedright
+Description\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+user\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+User \textbar{} Initiator\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+attr\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+\protect\hyperlink{string}{string}\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+isUser\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+boolean\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+проверка данные у пользователя или инициатора(заглушка временная)\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{filename-templatename-extension}{%
+\section{createDocument(fileName, templateName,extension)}\label{filename-templatename-extension}}
+
+Заполняет шаблон документа (templateName) данными из обращения и
+возвращает его в качестве вложения с названием fileName.extension
+\textbar{} Param \textbar{} Type \textbar{} Description \textbar{}
+\textbar{} --- \textbar{} --- \textbar{} --- \textbar{} \textbar{}
+fileName \textbar{} String \textbar{} Имя возвращаемого вложенияя
+\textbar{} \textbar{} templateName \textbar{} String \textbar{} Имя
+шаблона документа, куда будут подставлены данные из обращения \textbar{}
+\textbar{} extension \textbar{} String \textbar{} Расширение
+возвращаемого вложения (доступные значения PDF). Не обязательный
+параметр \textbar{}
+
+Пример:
+
+\begin{verbatim}
+setValue([createDocument([Заявление], [ЗаявлениеШаблон], [PDF])], [attachmentelid])
+\end{verbatim}
+
+Делегирует обращение к серверу и формирование документа-вложения функции
+doCreateDocument(tid, params, callback) Пример:
+
+\begin{verbatim}
+DOMCore.doCreateDocument = (tid, params, callback) => {
+  //params.fileName - имя возвращаемого вложения
+  //params.templateName - имя шаблона документа
+  //params.extension - расширение возвращаемого вложения
+  //params.interaction - объект Interaction
+  const response = anyDelegateFunction(params.fileName, params.templateName, params.extension, params.interaction);
+  callback(tid, response, null);
+}
+\end{verbatim}
+
+Функция доступна из JS шаблона через глобальный вызов
+doCreateDocument(fileName, templateName, extension, onSuccess, onError)
+Пример:
+
+\begin{verbatim}
+var fileName = 'Заявление';
+var templateName = 'ЗаявлениеШаблон';
+var extension = 'PDF';
+doCreateDocument(fileName, templateName, extension, onSuccess, onError);
+
+var onSuccess = function(attachmentData) {
+  console.log(JSON.stringify(attachmentData));
+}
+
+var onError = function(err) {
+  console.error(err && err.userMessage);
+}
+\end{verbatim}
+
+\hypertarget{attachment-mode}{%
+\section{signAttachment(attachment,mode)}\label{attachment-mode}}
+
+Запускает процесс подписи вложения (attachment) и возвращает подписанное
+вложение\textless{}
+
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+\begin{minipage}[b]{0.30\columnwidth}\raggedright
+Param\strut
+\end{minipage} & \begin{minipage}[b]{0.30\columnwidth}\raggedright
+Type\strut
+\end{minipage} & \begin{minipage}[b]{0.30\columnwidth}\raggedright
+Description\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+attachment\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+String\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Объект вложения(й) (AttachmentDTO) сериализованный в JSON\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+mode\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+String\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Режим подписи (доступные значения CLOUD - облачная подпись, TABLET -
+подпись через TM)\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Пример:
+
+\begin{verbatim}
+setValue(
+  [signAttachment(
+    [getValue([nonsignedattachment])],
+    [CLOUD]
+  )],
+  [attachmentelement]
+)
+\end{verbatim}
+
+Делегирует подписание функции doSignAttachment(tid,
+signAttachmentParams, callback) Пример:
+
+\begin{verbatim}
+DOMCore.doSignAttachment = (tid, params, callback) => {
+  // params.attachment - подписываемое вложения
+  // params.signMethod - метод подписания (CLOUD, TABLET)
+  const response = anyDelegateFunction(params);
+  callback(tid, response, null);
+}
+\end{verbatim}
+
+Функция доступна из JS шаблона через глобальный вызов
+doSignAttachment(attachment, method, onSuccess, onError) Пример:
+
+\begin{verbatim}
+var attachment = {asyncId: 12345};
+var method = 'CLOUD';
+doSignAttachment(attachment, method, onSuccess, onError);
+
+var onSuccess = function(attachmentData) {
+  console.log(JSON.stringify(attachmentData));
+}
+
+var onError = function(err) {
+  console.error(err && err.userMessage);
+}
+\end{verbatim}
