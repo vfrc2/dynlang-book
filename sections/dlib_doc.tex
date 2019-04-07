@@ -868,6 +868,30 @@ ARGN & DLMap \textbar{} \protect\hyperlink{string}{string} &
 \bottomrule
 \end{longtable}
 
+\section{execute3DTask(TASK, ARG0, ARG1, ARGN, DLMAP) -> DLMap \textbar{} 
+\label{execute3dtasktask-arg0-arg1-argn-dlmap-object}}
+Получение данных из автосполнятора в виде 3DMap объекта с actions
+
+Возвращает: DLMap \textbar{} * - Ответ от автосполнятора
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+Параметр & Тип & Описание\tabularnewline
+\midrule
+\endhead
+TASK & DLMap \textbar{} \protect\hyperlink{string}{string} & Название
+задачи в автосполняторе\tabularnewline
+ARG0 & DLMap \textbar{} \protect\hyperlink{string}{string} &
+Произвольный аргумет\tabularnewline
+ARG1 & DLMap \textbar{} \protect\hyperlink{string}{string} &
+Произвольный аргумет\tabularnewline
+ARGN & DLMap \textbar{} \protect\hyperlink{string}{string} &
+Произвольный аргумет\tabularnewline
+DLMap & DLMap \textbar{} \protect\hyperlink{string}{string} &
+объект содержащий текущее состояние динамической формы в которой вызывается команда\tabularnewline
+\bottomrule
+\end{longtable}
+
 \hypertarget{getusersbyorganizationrequestrealtyobj-text-object}{%
 \section{getUsersByOrganizationRequest(realtyObj, text) ->
 Object}\label{getusersbyorganizationrequestrealtyobj-text-object}}
