@@ -1,5 +1,5 @@
 \documentclass[14pt]{extbook}
-\usepackage[width=165mm, height=235mm, left=20mm, right=25mm, top=30mm, bottom=30mm]{geometry}
+\usepackage[width=165mm, height=235mm, left=25mm, right=25mm, top=30mm, bottom=30mm]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage[russian]{babel}
 \usepackage{graphicx}
@@ -28,7 +28,6 @@
     \mainmatter
     \tableofcontents
 	
-	
 	\pagestyle{fancy} 
 	\fancyhead[RE]{\leftmark}
 	\fancyhead[LE]{\thepage}
@@ -36,6 +35,13 @@
 	\fancyhead[RO]{\thepage}
 	\fancyfoot[]{}
 
+	\setcounter{secnumdepth}{0}
+
+    \chapter{История создания динамических форм}
+    \subfile{sections/prolog}
+    
+    \setcounter{secnumdepth}{3}
+    
 	\chapter{Введение}
 	\subfile{sections/introduction}
 	
@@ -49,7 +55,6 @@
 	% Группы ==================================================================================
     \subfile{sections/groups}
 
-    
     \chapter{Среды выполнения программ}\label{sec:environment}
     \subfile{sections/environment}
     
@@ -61,8 +66,10 @@
 	\chapter{Паттерны программирования на динамическом языке}
     \subfile{sections/patterns}
     
+    
     \appendix
     \chapter{Описание динамических команд}\label{sec:dlib_doc}
+    \setcounter{secnumdepth}{0}
     \subfile{sections/dlib_doc}
 
     % Глоссарий ================================================================================
