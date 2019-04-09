@@ -43,37 +43,34 @@
     \setcounter{secnumdepth}{3}
     
 	\chapter{Введение}
-	\subfile{sections/introduction}
+    \subfile{sections/introduction}
+    \subfile{sections/environment}
 	
 	% Структура программы =====================================================================
 	\chapter{Структура программы}
     \subfile{sections/structure}
+    \subfile{sections/async}
 
 	% Динамическая форма =====================================================================
 	\chapter{Динамическая форма}\label{sec:dynfom} 
     \subfile{sections/dynform}
-	% Группы ==================================================================================
     \subfile{sections/groups}
-
-    \chapter{Среды выполнения программ}\label{sec:environment}
-    \subfile{sections/environment}
-    
-	% Асинхронность ===========================================================================
-    \chapter{Асинхронные команды}
-    \subfile{sections/async}
 
 	% Паттерны ================================================================================
 	\chapter{Паттерны программирования на динамическом языке}
-    \subfile{sections/patterns}
+    \subfile{sections/patterns}    
     
-    
+
+    % Справочник
     \appendix
-    \chapter{Описание динамических команд}\label{sec:dlib_doc}
     \setcounter{secnumdepth}{0}
+    
+    \chapter{Описание динамических команд}\label{apx:dlib_doc}
     \subfile{sections/dlib_doc}
 
     \chapter{Примеры 3DMap структуры}\label{apx:3dmap}
-
+    \chapter{Запуск шаблонов без ПО ДРУГ'а}\label{apx:face20debug}
+    \chapter{Справочник компонентов дин форм}\label{apx:components}
 
     % Глоссарий ================================================================================
     \clearpage
