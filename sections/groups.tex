@@ -1,19 +1,21 @@
 \documentclass[../index.tex]{subfiles}
 \begin{document}
-Если заглянуть в истоки зарождения динамических форм, изначально не было реализовано поддержки элементов типа группа и поэтому было принято решение о том чтобы постараться с эмулировать понятие группы так чтобы элементы группировались по параметру \textbf{groupid}, так появились плоские группы и legacy группы(в рамках реализации domcore названные - нормализованные группы), позже механизм групп был добавлен в интерфейсы ЕСО, но для полноценного функционирования механизма групп в старых шаблонах необходимо уметь работать со всеми видами групп. Остановимся на типах групп подробнее в следующем разделе.
-\section{Виды групп}
-    На момент написания книги можно выделить три основные типа групп:
-\begin{enumerate}
-    \item Плоские группы. Плоские группы представляют собой элементы группируемые по параметру \textbf{groupid}, но при этом такие группы не имеют заголовка как такового, а при отображении не визуализируются как группа. Основная задача, которую решают данные группы -- сортировка и группировка элементов в одном блоке. Важно заметить, что при сохранении группы такого формата должны быть преобразованы обратно в список без группы.
-    \item Legacy группы. Основное отличие от плоских групп в наличии заголовка. Есть отличительная особенность поддержки Legacy групп Лице Друга 1.0 и domcore библиотеке: В первом случае поддерживается наличие более одного заголовка в группе, во втором же принято решение что заголовок группы может быть один. Все остальные заголовки не обрезаются при обработке динамической формы. При визуализации Legacy Group могут сворачиваться и управляться командой динамического языка \textbf{setFocus}. При сохранении они могут не разворачиваться и отправляться как нормальные группы, за исключением шаблонов помеченных атрибутом needunwrap, требующего развернуть
-    \item Группы. Стандартный механизм групп приходящий с заголовком внутренними элементами. Работа происходит в точности как с Legacy группами, за исключением, что их никогда не нужно разворачивать
-\end{enumerate}
-    Каждая группа имеет несколько механизмов - копирование, удаление и сворачивание. Если сворачивание группы это в большей степени чисто визуальный функционал, за исключением момента с использование функции \textbf{setFocus} над  заголовком группы. То копирование и удаление групп это отдельный функционал о котором мы поговорим в следующих разделах.
-\section{Копирование групп}
+	Динамические формы позволяют объединять последовательности элементов в единые сущности, называемые группами. Группы можно объединять под единым заголовком, визуально "сворачивать/разворачивать", копировать и удалять.
 
-Копирование групп - стандартный функционал поддерживаемый динамическим языком и позволяющий гибко настраивать механизм копирования. Копирование группы вызывается командой динамического языка \textbf{copyGroup}(Подробнее о ней можно прочитать в разделе Команды динамического языка). Стандартно принято прописывать копирование группы либо в sbcommand(раздел Динамические формы), либо при нажатии на кнопку addButton вложенную в группу.
-Функционал копирования групп привязан к исходному состоянию объекта в динамической форме, а не к его состоянию в момент копирования. Чтобы понять давайте посмотрим на примере:
-У нас из формы пришла группа:
+\section{Виды групп}
+    	Существуют несколько видов групп: так называемые, <<legacy>> и <<плоские>> группы -- элементы логически объединенные общим идентификатором группировки -- формат SMIT и старых версий  ПО ДРУГа и многоуровневые или просто <<группы>> -- современный формат, поддерживаемый ПО ДРУГа и позволяющий описывать сложные древовидные структуры динамических форм. Среда выполнения dom-core
+    	приводит legacy-форматы групп к древовидным на время работы с обращением, при этом в некоторых случаях при сохранении может потребоваться обратное преобразование формата для поддержки совместимости со старыми системами.
+\begin{enumerate}
+    \item Плоские группы. Плоские группы представляют собой элементы, объединенные по параметру \textbf{groupid}. Такие группы не имеют заголовка, и визуально не отделяются от остальных элементов. Основная задача, которую решают данные группы -- сортировка и группировка элементов в одном блоке, поддерживающим операции копирования и удаления. При работе через dom-core всегда требуется обратное преобразование в исходный формат.
+    \item Legacy группы. Основное отличие от плоских групп заключается в наличии заголовка. Есть отличительная особенность поддержки Legacy групп Лице Друга 1.0 и domcore: в первом случае поддерживается наличие более одного заголовка в группе, во втором же принято решение, что заголовок группы может быть один. Все остальные заголовки не обрезаются при обработке динамической формы. При визуализации Legacy Group могут сворачиваться и управляться командой динамического языка \textbf{setFocus}. При сохранении через dom-core они могут не разворачиваться и отправляться как нормальные группы, за исключением шаблонов помеченных атрибутом needunwrap, требующего развернуть
+    \item Группы. Целевой механизм групп. В xml-представлении ПО ДРУГа представлен элементом \verb|<group>|, поддерживащим вложенные
+    динамические элементы. Количество и тип вложенных элементов не ограничены: это могут быть и другие группы, что позволяет создавать сложные иерархические структуры динамических элементов. В json-представлении описываются массивом с именем \verb|"childs"|.
+\end{enumerate}
+
+\section{Копирование групп}
+Копирование групп -- стандартная функциональность, поддерживаемый динамическим языком и позволяющий <<тиражировать>> элементы динамической формы, объединенные в группу. Копирование группы вызывается командой динамического языка \textbf{copyGroup} (\autoref{copygroupgroupid-id-group-string}, \autopageref{copygroupgroupid-id-group-string}). Принято прописывать копирование группы либо в <<sbcommand>>, либо в <<sbtask>> атрибуте кнопки <<addButton>>.
+Функциональность копирования групп привязана к исходному (шаблонному) состоянию элементов в динамической форме, а не к их состоянию в момент копирования.
+Рассмотрим механизм копирования групп на примере представленного ниже json-представления шаблона:
 \begin{verbatim}
 {
     "objectType": "group",
@@ -24,9 +26,8 @@
     "style": "group",
     "visible": true,
     "width": "",
-    "sbobject": null,
     "sbdbfield": "groupAddressTo",
-    "sbonload": "[run(\n\t[if([iam([approver])],\n\t\t[if([isin([getApprovalStage([this])],[Подтверждение поездки])],\n\t\t\t[setCloseVisible([true],[this])],\n\t\t\t[if([isin([getApprovalStage([this])],[Утверждение поездки])],\n\t\t\t\t[setCloseVisible([true],[this])],\n\t\t\t\t[setCloseVisible([false],[this])]\n\t\t\t)]\n\t\t)],\n\t\t[setCloseVisible([false],[this])]\n\t)]\n)]\t",
+    "sbonload": "",
     "sbcopyinfo": false,
     "childs": [
         {
@@ -38,15 +39,130 @@
         "sbcommand": "",
         "sbmask": "",
         "sbmodify": true,
-        "sbtask": "if(\r\n\t[run([setValue([getDistance([ getValues([ find([id],[address], [grouptrip]) ]) ])],[array])])],\r\n\t[if(\r\n\t\t[isin([getText([distance],[array])],[])],\r\n\t\t[run(\r\n\t\t\t[clear([array])],\r\n\t\t\t[setValue([0,00],[cost])],\r\n\t\t\t[setValue([plus([#0.00],[getTexts([find([id],[plus([c],[ost])],[])])])],[allcost])],\r\n\r\n\t\t\t[setValue([0,000],[distancetext])],\r\n\t\t\t[setValue([0],[timetext])],\r\n\r\n\t\t\t[setValue([0],[distancevalue])],\r\n\t\t\t[setValue([0],[kmdistancevalue])],\r\n\r\n\t\t\t[setValue([0],[timevalue])],\r\n\r\n\t\t\t[setValue([plus([#0.000],[div([#0.000], [plus([#0.000],[getTexts([find([id],[plus([distanc],[evalue])],[])])])], [1000])])],[alldistancetext])],\r\n\t\t\t[setValue( [plus([div([#0], [plus([#0.00],[getTexts([find([id],[plus([tim],[evalue])],[])])])], [60])])] ,[alltimetext])]\r\n\t\t)],\r\n\t\t[run(\r\n\t\t\t[setValue([getText([time_text],[array])],[timetext])],\r\n\t\t\t[setValue([div([#0.000],[getText([distance],[array])],[1000])],[distancetext])],\r\n\t\t\t[setValue([getText([time],[array])],[timevalue])],\r\n\r\n\t\t\t[setValue([getText([distance],[array])],[distancevalue])],\r\n\t\t\t[setValue([div([#0.000],[getText([distance],[array])],[1000])],[kmdistancevalue])],\r\n\r\n\t\t\t[if(\r\n\t\t\t\t[run(\r\n\t\t\t\t\t[setValid([true],[],[pricelabel])],\r\n\t\t\t\t\t[setValues([_getCost([FF_GET_CONDITIONAL_PRICE_DOUBLE],[getUser([TabNum])],[getText([distance],[array])],[getText([time],[array])],[getText([cfgtransporttype])],[plus([#0.00],[getTexts([find([id],[wait], [grouptrip])])])],[cost],[1],[getValue([date])],[getUser([template])])],[cost])]\r\n\t\t\t\t\t)],\r\n\t\t\t\t[run(\r\n\t\t\t\t\t[setValue( [plus([#0.00],[getTexts([find([id],[plus([c],[ost])],[])])])], [allcost])],\r\n\t\t\t\t\t[setValue([plus([#0.000],[div([#0.000], [plus([#0.000],[getTexts([find([id],[plus([distanc],[evalue])],[])])])], [1000])])],[alldistancetext])],\r\n\t\t\t\t\t[setValue( [plus([div([#0], [plus([#0.00],[getTexts([find([id],[plus([tim],[evalue])],[])])])], [60])])] ,[alltimetext])]\r\n\t\t\t\t)],\r\n\t\t\t[])])])\r\n\t],\r\n\t[]\r\n)",
+        "sbtask": "if(
+    [run(
+        [setValue(
+            [getDistance(
+                [getValues([find([id],[address],[grouptrip])]
+                )]
+            )],
+            [array]
+        )]
+    )],
+[if(
+    [isin(
+        [getText(  [distance], [array] )], []
+    )],
+    [run( [clear( [array])],
+        [setValue( [0,00], [cost])],
+        [setValue(
+            [plus(
+                [#0.00],
+                [getTexts([find([id],[plus([c],[ost])],[])])]
+            )],
+            [allcost]
+        )],
+        [setValue([0,000], [distancetext]
+        )],
+        [setValue( [0], [timetext])],
+        [setValue([0], [distancevalue])],
+        [setValue( [0], [kmdistancevalue] )],
+        [setValue( [0], [timevalue])],
+        [setValue(
+        [plus(
+            [#0.000],
+            [div( [#0.000],[plus( [#0.000],
+            [getTexts(
+                    [find([id],
+                     	[plus([distanc],[evalue])],[])])]
+                    )],
+                [1000]
+            )]
+        )],
+        [alldistancetext]
+        )],
+        [setValue(
+            [plus(
+                [div( [#0], [plus( [#0.00],[getTexts(
+                 [find([id],
+                 	[plus([tim],[evalue])],[])])])],[60]
+                )]
+            )],
+            [alltimetext]
+        )]
+    )],
+[run(
+    [setValue(
+        [getText([time_text], [array])],
+        [timetext]
+    )],
+    [setValue(
+        [div(
+            [#0.000],
+            [getText([distance], [array])],
+            [1000]
+        )],
+        [distancetext]
+    )],
+    [setValue(
+        [getText([time], [array])],
+        [timevalue]
+    )],
+    [setValue(
+        [getText([distance],[array] )],
+        [distancevalue]
+    )],
+    [setValue(
+        [div(
+            [#0.000],
+            [getText([distance], [array])],
+            [1000]
+        )],
+        [kmdistancevalue]
+    )],
+[if(
+    [run(
+        [setValid([true],[], [pricelabel])],
+        [setValues(
+            [_getCost(
+                [FF_GET_CONDITIONAL_PRICE_DOUBLE],
+                [getUser( [TabNum])],
+                [getText([distance], [array])],
+                [getText([time], [array])],
+                [getText([cfgtransporttype] )],
+                [plus([#0.00],
+                  [getTexts([find([id],[wait],[grouptrip])])])],
+                [cost],[1],
+                [getValue( [date])],
+                [getUser([template])]
+            )],
+            [cost]
+    )]
+)],
+[run(
+    [setValue(
+        [plus([#0.00],
+            [getTexts([find([id],[plus([c],[ost])],[])])]
+        )],
+        [allcost]
+    )],
+    [setValue(
+        [plus( [#0.000],[div([#0.000], [plus( [#0.000],
+        [getTexts([find([id],
+        	[plus([distanc],[evalue])],[])])])],[1000])]
+        )],
+        [alldistancetext]
+    )],
+    [setValue(
+        [plus([div([#0], [plus([#0.00], [getTexts(
+            [find([id], [plus([tim],[evalue])],[])])])],[60])]
+        )],
+        [alltimetext]
+    )]
+)], [])])])],[])",
         "sbtitle": "",
         "sbtype": "address",
-        "sbstyle": "width:65%",
         "style": "combo",
-        "visible": true,
-        "width": "",
-        "sbobject": null,
-        "sbdbfield": "addressTo",
         "groupid": ""
         },
         {
@@ -55,18 +171,26 @@
         "id": "wait",
         "label": "Время ожидания",
         "mandatory": false,
-        "sbcommand": "run([setMinHours([0],[setMaxHours([2],[this])])], [if([isin([getValue([cfgtransporttype])],[Такси])],[setVisible([true],[this])],[run([setVisible([false],[this])],[setStyle([width],[100%],[addressto])])])])",
+        "sbcommand": "run(
+    [setMinHours(
+        [0],
+        [setMaxHours([2],[this])]
+    )],
+    [if(
+        [isin(
+            [getValue([cfgtransporttype] )],
+            [Такси]
+        )],
+        [setVisible([true],[this])],
+        [setVisible([false],[this])]
+    )]
+)",
         "sbmask": "HH:mm",
         "sbmodify": true,
-        "sbtask": "if(\n    [run([setValue([getDistance([getValues([find([id],[address],[grouptrip])])])],[array])])],\n    \n    [if(\n        [isin([getText([distance],[array])],[])],\n        [run(\n            [clear([array])],\n            [setValue([0,00],[cost])],\n            [setValue([plus([#0.00],[getTexts([find([id],[plus([c],[ost])],[])])])],[allcost])],\n            [setValue([Не рассчитатно],[distancetext])],\n            [setValue([Не рассчитано],[timetext])]\n        )],\n        [run(\n            [setValue([getText([time_text],[array])],[timetext])],\n            [setValue([div([#0.000],[getText([distance],[array])],[1000])],[distancetext])],\n            [if(\n                [run([setValid([true],[],[pricelabel])],[setValues([_getCost([FF_GET_CONDITIONAL_PRICE_DOUBLE],[getUser([id])],[getText([distance],[array])],[getText([time],[array])],[getText([cfgtransporttype])],[plus([#0.00],[getTexts([find([id],[wait], [grouptrip])])])],[cost],[1],[getValue([date])],[getUser([template])])],[cost])])],\n                [setValue([plus([#0.00],[getTexts([find([id],[plus([c],[ost])],[])])])],[allcost])],\n                []\n            )]\n        )]\n    )],\n    []\n)",
-        "sbtitle": "",
-        "sbtype": "",
-        "sbstyle": "width:35%",
+        "sbtask": "",
         "style": "text",
         "visible": false,
-        "width": "",
         "sbcopyinfo": false,
-        "childs": null,
         "groupid": "distanation"
         },
         {
@@ -75,32 +199,29 @@
         "id": "addgroupaddress",
         "label": "Добавить еще один адрес",
         "mandatory": false,
-        "sbcommand": "",
         "sbmodify": true,
         "sbtask": "copyGroup([groupaddress],[this])",
-        "sbtitle": "",
         "sbtype": "buttonadd",
-        "sbstyle": "",
         "style": "checkbox",
         "visible": true,
-        "width": "",
         "sbdbfield": "addGroupAddress",
-        "text": "if([run([setValue([getDistance([getValues([find([id],[address],[grouptrip])])])],[array])])],[if([isin([getText([distance],[array])],[])],[run([clear([array])],[setValue([0,00],[cost])],[setValue([0,000],[distancetext])],[setValue([0],[timetext])],[setValue([0],[distancevalue])],[setValue([0],[kmdistancevalue])],[setValue([0],[timevalue])],[if([isin([isVisible([approvebox])],[false])],[run([setValue([plus([#0.00],[getTexts([find([id],[plus([c],[ost])],[])])])],[allcost])],[setValue([plus([#0.000],[div([#0.000], [plus([#0.000],[getTexts([find([id],[plus([distanc],[evalue])],[])])])], [1000])])] ,[alldistancetext])],[setValue([plus([div([#0], [plus([#0.00],[getTexts([find([id],[plus([tim],[evalue])],[])])])], [60])])],[alltimetext])])],[if([isin([getValue([approvebox])],[true])],[run([setValue([plus([#0.00],[getTexts([find([id],[plus([c],[ost])],[])])])],[allcost])],[setValue([plus([#0.000],[div([#0.000], [plus([#0.000],[getTexts([find([id],[plus([distanc],[evalue])],[])])])], [1000])])] ,[alldistancetext])],[setValue([plus([div([#0], [plus([#0.00],[getTexts([find([id],[plus([tim],[evalue])],[])])])], [60])])],[alltimetext])])],[])],)])],[run([if([run([setValid([true],[],[pricelabel])],[setValues([_getCost([FF_GET_CONDITIONAL_PRICE_DOUBLE],[getUser([TabNum])],[getText([distance],[array])],[getText([time],[array])],[getText([cfgtransporttype])],[plus([#0.00],[getTexts([find([id],[wait], [grouptrip])])])],[cost],[1],[getValue([date])],[getUser([template])])],[cost])])],[if([isin([getSize([getValues([find([id],[address],[grouptrip])])])],[1])],[run([clear([array])],[setValue([0,00],[cost])],[setValue([0,000],[distancetext])],[setValue([0],[timetext])],[setValue([0],[distancevalue])],[setValue([0],[kmdistancevalue])],[setValue([0],[timevalue])],[if([isin([isVisible([approvebox])],[false])],[run([setValue([plus([#0.00],[getTexts([find([id],[plus([c],[ost])],[])])])],[allcost])],[setValue([plus([#0.000],[div([#0.000], [plus([#0.000],[getTexts([find([id],[plus([distanc],[evalue])],[])])])], [1000])])],[alldistancetext])],[setValue([plus([div([#0], [plus([#0.00],[getTexts([find([id],[plus([tim],[evalue])],[])])])], [60])])] ,[alltimetext])])],[if([isin([getValue([approvebox])],[true])],[run([setValue([plus([#0.00],[getTexts([find([id],[plus([c],[ost])],[])])])],[allcost])],[setValue([plus([#0.000],[div([#0.000], [plus([#0.000],[getTexts([find([id],[plus([distanc],[evalue])],[])])])], [1000])])],[alldistancetext])],[setValue([plus([div([#0], [plus([#0.00],[getTexts([find([id],[plus([tim],[evalue])],[])])])], [60])])] ,[alltimetext])])],[])],)])],[run([setValue([getText([time_text],[array])],[timetext])],[setValue([div([#0.000],[getText([distance],[array])],[1000])],[distancetext])],[setValue([getText([time],[array])],[timevalue])],[setValue([getText([distance],[array])],[distancevalue])],[setValue([div([#0.000],[getText([distance],[array])],[1000])],[kmdistancevalue])],[if([isin([isVisible([approvebox])],[false])],[run([setValue([plus([#0.00],[getTexts([find([id],[plus([c],[ost])],[])])])],[allcost])],[setValue([plus([#0.000],[div([#0.000],[plus([#0.000],[getTexts([find([id],[plus([distanc],[evalue])],[])])])],[1000])])],[alldistancetext])],[setValue([plus([div([#0],[plus([#0.00],[getTexts([find([id],[plus([tim],[evalue])],[])])])], [60])])],[alltimetext])])],[if([isin([getValue([approvebox])],[true])],[run([setValue([plus([#0.00],[getTexts([find([id],[plus([c],[ost])],[])])])],[allcost])],[setValue([plus([#0.000],[div([#0.000],[plus([#0.000],[getTexts([find([id],[plus([distanc],[evalue])],[])])])],[1000])])],[alldistancetext])],[setValue([plus([div([#0],[plus([#0.00],[getTexts([find([id],[plus([tim],[evalue])],[])])])], [60])])],[alltimetext])])],[])],)])])],[])])])],[])",
+        "text": "",
         "groupid": "distanation"
         }
     ]
 }
 \end{verbatim}
-Мы изменяем заполняем значение Маршрут следования и время ожидания, и при нажатии на кнопку "Добавить еще один адрес» выполняется команда sbtask в которой вызывается копирование группы и происходит магия -- копируется группа, но все заполненные нами поля не учитываются и поля Маршрут следования и время ожидания в новой созданной группе будут пустыми. Точно так же происходит и с новыми элементами, если в группе динамическим языком добавятся новые элементы, то при копировании они не будут учтены и новая группа создастся без них. 
-Итого -  при копировании группы не учитываются никакие изменения произведенные с элементами группы и самой группой. В том числе не учитываются изменения видимости, обязательности, возможности изменений и т.д. 
 
-Еще одной важной особенностью является визуальное отображения кнопок копирования. Функционально не запрещено, но визуально скрываются все кнопки для копирования групп кроме последней в наборе. То есть нажать на кнопку и добавить можно только в конец группы, но это только визуальное ограничение сделанное для более эстетичного вида. 
-Исключительной особенностью обладают группы элементы которых помещаются в одну строчку. Визуальное отображение элементов разделено от функционального. Если элементы группы для всех скопированных групп из одного множества удовлетворяют условию что все элементы по ширине могу уместиться в одной строке(кнопка для копирования группы не учитывается при вычислениях), то визуально все группы склеиваются в одну и отображаются как общая группа с одним заголовком, при этом функциональная часть остается неизменной, там все также это представляется как разные группы.
-Если копирование работает над Плоской группой - проверять условия описанные выше не имеет смысла, так как плоские группы не имеют заголовка, поэтому проверка производится только для групп типа Legacy и стандартных групп
+Пользователь заполняет значения <<Маршрут следования>> и <<Время ожидания>>, и при нажатии на кнопку <<Добавить еще один адрес» выполняется команда <<sbtask>>, в которой вызывается копирование группы. При этом, все заполненные ранее поля не учитываются: значения полей в скопированных элементах <<Маршрут следования>> и <<Время ожидания>> группе будут пустыми. Также не будут копироваться никакие динамические элементы, добавленные динамически. При копировании не учитываются никакие изменения, произведенные с элементами группы и самой группой. В том числе не учитываются изменения видимости, обязательности, возможности изменений и т.д.
+
+Еще одной важной особенностью является визуальное отображения кнопок копирования. Визуально все кнопки для копирования групп скрываются, кроме последней в наборе.
+Исключительной особенностью обладают группы, элементы которых помещаются в одну строчку. Визуальное отображение элементов отделено от функционального. Если элементы группы для всех скопированных групп из одного множества удовлетворяют условию, что все элементы по ширине могу уместиться в одной строке(кнопка для копирования группы не учитывается при вычислениях), то визуально все группы склеиваются в одну и отображаются как общая группа с одним заголовком, при этом функциональная часть остается неизменной, там все также это представляется как разные группы.
+Если копирование работает над <<Плоской>> группой -- проверять условия описанные выше не имеет смысла, так как плоские группы не имеют заголовка, поэтому проверка производится только для групп типа <<Legacy>> и стандартных групп.
+
 \section{Удаление групп}
 
-Удаление групп - операция позволяющая удалить любую в том числе и первую группу в подмножетсве скопированных групп. Эта функция одна из немногих, которые не реализованы в динамическом языке, а разрешаются с использованием вызовов обработчиков через UI.
-Удаление групп возможно только в том случае если групп в подмножестве больше 1-ой(2, 3 и т.д.). При добавлении группы через копирование у всех групп появляется возможность закрыть(удалить группу) визуально отображается в виде крестика над группой или элементом если группы склеились в одну.
-При нажатии на крестик происходит поиск группы и удаление ее, а дополнительно перед удалением у той группы, которую удаляют находят элемент \textbf{buttonAdd} и вызывают команду выполнение команды динамического языка установленную в параметр \textbf{text} этого поля. Что позволяет например вести пересчеты расстояний и стоимости поездки при удалении адреса из маршрута.
+Удаление групп возможно только в том случае, если групп в подмножестве больше, чем одна. При добавлении группы через копирование у всех групп появляется возможность удалить группу через пользовательский интерфейс. Функция удаления -- одна из немногих, которые не поддерживается на уровне команд динамического языка, а разрешаются с использованием вызовов обработчиков через UI.
+
+При нажатии на кнопку закрытия (крестик), происходит удаление группы. Если удаляемая группа содержит элемент \textbf{buttonAdd}, то после выполнения закрытия, выполняется динамическая команда, установленная в параметр \textbf{text} этого поля. В рассмотренном ранее примере, данный механизм позволяет пересчитать расстояния и стоимость поездки при удалении адреса из маршрута.
 
 \end{document}
