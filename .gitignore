@@ -246,3 +246,5 @@ TSWLatexianTemp*
 
 #misc
 .DS_Store
+
+.idea/
