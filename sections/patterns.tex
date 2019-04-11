@@ -87,7 +87,13 @@ run(
 дважды, сократим код примера до следующей записи:
 
 \begin{verbatim}
-setEnabled([false],[setMandatory([false],[setVisible([false],[this])])])
+setEnabled([false],
+	[setMandatory([false],
+		[setVisible([false],
+			[this]
+		)
+	])
+])
 \end{verbatim}
 
 Мы также избавились от необходимости использования динамической команды <<run>>!
@@ -345,7 +351,8 @@ if(
 
 \begin{verbatim}
 <text id="month_num" visible="false"
-        sbcommand="setValue([substr([getsysdate([+0])],[3],[5])],[this])]" 
+        sbcommand=
+        "setValue([substr([getsysdate([+0])],[3],[5])],[this])]" 
  />
 \end{verbatim}
 
@@ -403,7 +410,7 @@ setValue(
 \begin{verbatim}
 <text id="month_num" visible="false">0</text>
 \end{verbatim}
-
+\emergencystretch 2em
 Для добавления нового месяца в итоговый select достаточно выполнить вызвать нашу функцию <<add\_month>> через оператор call: 
 
 \begin{verbatim}
