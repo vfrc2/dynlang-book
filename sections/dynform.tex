@@ -90,14 +90,28 @@
 Под наследованием состояния динамической формы, понимается последовательный перенос свойств динамических полей
 из исходной формы в производную. Перенос производится для динамических полей, совпадающих по свойству \verb|id|.
 
-Наследуются следующие свойства: \verb|value|, \verb|visible|, \verb|enabled|, \verb|sbmodify|.
+
+Наследуются следующие свойства:
+\begin{itemize}
+    \item \verb|value|
+    \item \verb|visible|
+    \item \verb|enabled|
+    \item \verb|sbmodify|
+\end{itemize}
+\vspace{5mm}
 
 
 Некоторые типы динамических элементов, содержат значения в виде набора дочерних элементов,
 например: чек-боксы, радио-боксы, выпадающие списки. Эти дочерние элементы имеют свои
 свойства: видимость, доступность для редактирования и значение.
 Свойства дочерних элементов тоже должны быть унаследованы, и передаются в
-атрибутах: \verb|valueSelected|, \verb|valueEnabled|, \verb|valueVisible|.
+атрибутах:
+\begin{itemize}
+  \item \verb|valueSelected|
+  \item \verb|valueEnabled|
+  \item \verb|valueVisible|
+\end{itemize}
+\vspace{5mm}
 
 
 \textbf{Примечание}
@@ -154,6 +168,8 @@
 \begin{verbatim}
     setCopyVisible([bool],[id])
 \end{verbatim}
+
+\subsection{Кнопка «Копировать»}
 
 
 \section{Общее описания динамического поля}
