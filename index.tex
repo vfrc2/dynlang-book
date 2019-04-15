@@ -42,7 +42,7 @@
     \chapter{История создания динамических форм}
     \subfile{sections/prolog}
     
-    \setcounter{secnumdepth}{3}
+    \setcounter{secnumdepth}{1}
     
 	\chapter{Введение}
     \subfile{sections/introduction}
@@ -68,12 +68,10 @@
     \subfile{sections/patterns}
     
    	% Истории успеха
-    \chapter{Истории успеха}
-    \subfile{sections/success_stories}
+   	\setcounter{secnumdepth}{0}
 
     % Справочник
     \appendix
-    \setcounter{secnumdepth}{0}
     
     \chapter{Описание динамических команд}\label{apx:dlib_doc}
     \subfile{sections/dlib_doc}
@@ -85,5 +83,8 @@
     % Глоссарий ================================================================================
     \clearpage
     \printglossaries 
+    
+     \chapter{Истории успеха}
+    \subfile{sections/success_stories}
 
 \end{document}
